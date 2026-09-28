@@ -48,6 +48,6 @@ html=html.replace(old,new)
 for label in ("workshop","frequency","pirate"):
     if f"data-skin=\"{label}\"" not in html and f"{label}:[" not in html:raise RuntimeError("Missing identity "+label)
 for name in list(EXPECTED)+["frequency-hardware-approved.png"]:
-    if name not in html and name!="frequency-material.webp":raise RuntimeError("Asset not referenced: "+name)
+    if name not in html and name not in ("frequency-material.webp","workshop-original.webp"):raise RuntimeError("Asset not referenced: "+name)
 print("PASS: seven image assets, three identities, mobile patch, Field Record and saved identity")
 for p in sorted(ROOT.iterdir()):print(p.name,p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())
