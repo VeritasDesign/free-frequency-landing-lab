@@ -37,6 +37,10 @@ old="frequency:['frequency-material.webp','Unbranded graphite and brushed metal 
 new="frequency:['frequency-hardware-approved.png','Brushed-metal FREQUENCY hardware with illuminated status light']"
 if html.count(old)!=1:raise RuntimeError("Expected original frequency scene not found")
 html=html.replace(old,new)
+desktop='''/* AIR-REAL-002 desktop Frequency hero correction */
+@media(min-width:761px){
+ body[data-skin="frequency"] .heroArt #hero-scene{object-fit:contain;object-position:center;transform:none}
+}'''
 mobile='''/* Approved FREQ phone-only correction */\n@media(max-width:760px){\n body[data-skin="frequency"] nav{position:relative;top:auto;z-index:20;background:#111519}\n body[data-skin="frequency"] .heroGrid{min-height:0;display:flex;flex-direction:column}\n body[data-skin="frequency"] .heroCopy{width:100%;padding:42px 0 22px}\n body[data-skin="frequency"] .heroArt{position:relative;inset:auto;width:100%;height:auto;min-height:0;overflow:visible;display:block}\n body[data-skin="frequency"] .heroArt #hero-scene{display:block;width:100%;height:auto;max-width:100%;aspect-ratio:1536 / 1024;object-fit:contain;object-position:center;opacity:1;filter:none}\n body[data-skin="frequency"] .heroArt:after{background:none}\n body[data-skin="frequency"] .artIndex{bottom:8px;right:8px}\n}'''
 beta_css='''/* Listing Agent private-beta feature */
 .betaFeature{margin:0 0 28px;border:1px solid var(--line);background:var(--card);display:grid;grid-template-columns:minmax(0,.92fr) minmax(320px,1.08fr);overflow:hidden}
@@ -50,7 +54,7 @@ beta_css='''/* Listing Agent private-beta feature */
 @media(max-width:760px){.betaFeature{grid-template-columns:1fr}.betaFeatureCopy{padding:26px 22px}.betaFeatureMedia{min-height:0;padding:12px}.betaFeatureMedia img{max-height:none}}
 '''
 if html.count("</style>")!=1:raise RuntimeError("Unexpected style boundaries")
-html=html.replace("</style>",beta_css+mobile+"</style>")
+html=html.replace("</style>",beta_css+desktop+mobile+"</style>")
 import re
 html,n=re.subn(r'<img\s+class="heroApprovedMark"[^>]*>',"",html)
 if n<1:raise RuntimeError("Oversized hero logo selector missing")
