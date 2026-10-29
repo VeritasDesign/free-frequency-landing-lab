@@ -106,6 +106,12 @@ old="document.querySelectorAll('.skinPicker button').forEach(button=>button.addE
 new="try{const saved=localStorage.getItem('ff-landing-skin');if(saved&&identityScenes[saved]){document.body.dataset.skin=saved;const hero=document.getElementById('hero-scene');hero.src=identityScenes[saved][0];hero.alt=identityScenes[saved][1];document.querySelectorAll('.skinPicker button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.skin===saved)));}}catch(e){}document.querySelectorAll('.skinPicker button').forEach(button=>button.addEventListener('click',()=>{const skin=button.dataset.skin;try{localStorage.setItem('ff-landing-skin',skin)}catch(e){}"
 if html.count(old)!=1:raise RuntimeError("Original identity switcher not found")
 html=html.replace(old,new)
+# Publication guard: do not ship ORACLE gallery with absent or empty assets.
+for gallery_asset in ("oracle-spectral-red.jpg","oracle-spectral-green.jpg","oracle-water.jpg"):
+    gallery_path=pathlib.Path(__file__).resolve().parent/"showroom-assets"/gallery_asset
+    if not gallery_path.is_file() or gallery_path.stat().st_size < 10000:
+        raise RuntimeError("ORACLE showroom image missing: "+str(gallery_path))
+    (ROOT/gallery_asset).write_bytes(gallery_path.read_bytes())
 (ROOT/"index.html").write_text(html,encoding="utf-8")
 for label in ("workshop","frequency","pirate"):
     if f"data-skin=\"{label}\"" not in html and f"{label}:[" not in html:raise RuntimeError("Missing identity "+label)
