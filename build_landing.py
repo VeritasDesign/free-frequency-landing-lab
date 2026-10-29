@@ -64,6 +64,44 @@ marker='<div class="grid toolGrid">'
 if html.count(marker)!=1:raise RuntimeError("Public tools grid anchor missing")
 html=html.replace(marker,beta_feature+marker)
 
+# Showroom extension: additive only; three original identity skins untouched.
+showroom_css='''/* Family apps and ORACLE showcase: inherited skin variables */
+.showroomApps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0 0 28px}
+.showroomCard{background:var(--card);border:1px solid var(--line);padding:26px;display:flex;flex-direction:column;gap:12px}
+.showroomCard h3{font-size:clamp(26px,3vw,38px);line-height:1.1;margin:0}
+.showroomCard p{margin:0;flex:1}
+.showroomKicker{font:700 11px/1.4 monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.oracleShowcase{border:1px solid var(--line);background:var(--card);margin:0 0 28px;padding:26px}
+.oracleShowcase h3{font-size:clamp(32px,4vw,54px);margin:8px 0 12px}
+.oracleShowcase p{max-width:740px}
+.oracleGallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.oracleGallery figure{margin:0;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.oracleGallery img{display:block;width:100%;height:220px;object-fit:cover}
+.oracleGallery figcaption{font-size:12px;color:var(--muted);padding:10px}
+@media(max-width:760px){.showroomApps{grid-template-columns:1fr}.oracleGallery{grid-template-columns:1fr}.oracleGallery img{height:auto;max-height:350px;object-fit:contain}.showroomCard,.oracleShowcase{padding:20px}}
+'''
+if html.count("</style>")!=1:raise RuntimeError("Showroom CSS style anchor missing")
+html=html.replace("</style>",showroom_css+"</style>")
+showroom='''<section class="oracleShowcase" aria-labelledby="oracle-showcase-title">
+<div class="showroomKicker">EARTH OBSERVATION · PREVIEW IN DEVELOPMENT</div>
+<h3 id="oracle-showcase-title">ORACLE</h3>
+<p>Explore the world through real satellite imagery and spectral views. ORACLE is an experimental map laboratory for looking beyond ordinary color imagery, including historical Sentinel-2 scenes.</p>
+<div class="oracleGallery" aria-label="ORACLE imagery examples">
+<figure><img src="oracle-spectral-red.jpg" alt="ORACLE Sentinel-2 false-color red vegetation satellite view of Midland" loading="lazy"><figcaption>False-color vegetation view</figcaption></figure>
+<figure><img src="oracle-spectral-green.jpg" alt="ORACLE alternate green and purple spectral satellite view" loading="lazy"><figcaption>Custom spectral view</figcaption></figure>
+<figure><img src="oracle-water.jpg" alt="ORACLE spectral satellite view of a lake and surrounding shoreline" loading="lazy"><figcaption>Water and shoreline spectral view</figcaption></figure>
+</div>
+<p class="betaNote">COMING SOON · The current development preview is protected. Public access is not yet available.</p>
+</section>
+<div class="showroomApps" aria-label="Family applications">
+<article class="showroomCard"><div class="showroomKicker">OPEN APP · RECIPE DISCOVERY</div><h3>ScreenBites</h3><p>Find something delicious to make from a collection of screen-inspired foods and recipe discoveries.</p><div class="actions"><a class="btn primary" href="https://screenbites-ashen.vercel.app/" target="_blank" rel="noopener noreferrer">OPEN SCREENBITES ↗</a></div></article>
+<article class="showroomCard"><div class="showroomKicker">OPEN APP · FAMILY COOKBOOK</div><h3>Family Recipe Vault</h3><p>Keep the recipes worth keeping. Organize family favorites, cook from readable recipe cards, and export a backup of your collection.</p><div class="actions"><a class="btn primary" href="https://family-recipe-vault-pearl.vercel.app/" target="_blank" rel="noopener noreferrer">OPEN RECIPE VAULT ↗</a></div></article>
+</div>'''
+if html.count(beta_feature)!=1:raise RuntimeError("Listing Agent feature not found exactly once")
+html=html.replace(beta_feature,beta_feature+showroom)
+if 'utm_source=chatgpt.com' in html:html=html.replace('utm_source=chatgpt.com','')
+
+
 old="document.querySelectorAll('.skinPicker button').forEach(button=>button.addEventListener('click',()=>{const skin=button.dataset.skin;"
 new="try{const saved=localStorage.getItem('ff-landing-skin');if(saved&&identityScenes[saved]){document.body.dataset.skin=saved;const hero=document.getElementById('hero-scene');hero.src=identityScenes[saved][0];hero.alt=identityScenes[saved][1];document.querySelectorAll('.skinPicker button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.skin===saved)));}}catch(e){}document.querySelectorAll('.skinPicker button').forEach(button=>button.addEventListener('click',()=>{const skin=button.dataset.skin;try{localStorage.setItem('ff-landing-skin',skin)}catch(e){}"
 if html.count(old)!=1:raise RuntimeError("Original identity switcher not found")
