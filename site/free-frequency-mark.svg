@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">Free Frequency Tech logo</title><desc id="desc">Yellow warning triangle with radio signal symbol inside a circular black and yellow badge.</desc>
+<defs>
+  <pattern id="brick" width="32" height="18" patternUnits="userSpaceOnUse">
+    <rect width="32" height="18" fill="#0a0a0a"/>
+    <path d="M0 0H32M0 18H32M0 9H16M16 9H32M8 0V9M24 9V18" stroke="#292516" stroke-width="1" opacity=".55"/>
+  </pattern>
+  <radialGradient id="glow" cx="50%" cy="32%" r="70%">
+    <stop offset="0" stop-color="#f8cf42" stop-opacity=".18"/><stop offset="1" stop-color="#f8cf42" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<circle cx="128" cy="128" r="121" fill="#030403" stroke="#f6c62e" stroke-width="8"/>
+<circle cx="128" cy="128" r="115" fill="url(#brick)"/>
+<circle cx="128" cy="128" r="115" fill="url(#glow)"/>
+<path d="M128 42 211 194H45Z" fill="#f6c62e"/>
+<circle cx="128" cy="128" r="10" fill="#090909"/>
+<path d="M114 111Q96 128 114 145M142 111Q160 128 142 145M100 96Q69 128 100 160M156 96Q187 128 156 160M84 80Q38 128 84 176M172 80Q218 128 172 176" fill="none" stroke="#090909" stroke-width="10" stroke-linecap="butt"/>
+<path d="M119 137h18l14 48h-46z" fill="#090909"/>
+</svg>
